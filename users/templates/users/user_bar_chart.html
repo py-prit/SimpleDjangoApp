@@ -1,0 +1,56 @@
+{% extends 'users/base2.html' %}
+{% load static %}
+{% block title %}Bar Chart{% endblock %}
+{% block content %}
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-size: 9pt;
+        }
+
+        #chartdiv {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/kelly.js"></script>
+    <div id="chartdiv"></div>
+    <script>
+        // Apply chart themes
+        am4core.useTheme(am4themes_animated);
+        am4core.useTheme(am4themes_kelly);
+
+        // Create chart instance
+        var chart = am4core.create("chartdiv", am4charts.XYChart);
+
+        chart.marginRight = 400;
+        const data = '{{ chart_data|safe }}'
+        // Add data
+        chart.data = JSON.parse(data)
+        // Create axes
+        var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+        categoryAxis.dataFields.category = "category";
+        categoryAxis.title.text = "Expense Category";
+        categoryAxis.renderer.grid.template.location = 0;
+        categoryAxis.renderer.minGridDistance = 20;
+
+
+        var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+        valueAxis.title.text = "Expense";
+
+        // Create series
+        var series = chart.series.push(new am4charts.ColumnSeries());
+        series.dataFields.valueY = "expense";
+        series.dataFields.categoryX = "category";
+        series.name = "Expense";
+        series.tooltipText = "{name}: [bold]${valueY}";
+        series.stacked = true;
+
+        // Add cursor
+        chart.cursor = new am4charts.XYCursor();
+
+    </script>
+{% endblock %}

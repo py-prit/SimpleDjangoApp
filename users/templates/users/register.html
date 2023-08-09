@@ -1,0 +1,57 @@
+{% extends 'users/base.html' %}
+{% load static %}
+{% block title %}Registration{% endblock %}
+{% block content %}
+    <div class="registration-form">
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <h1 class="text-center login-title">Create Account</h1>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control item" name="username" maxlength="150" autofocus="" required=""
+                       id="id_username" placeholder="Username">
+                {{ form.username.errors }}
+            </div>
+
+            <div class="form-group">
+                <input type="email" class="form-control item" name="email" maxlength="254" id="id_email"
+                       placeholder="Email">
+                {{ form.email.errors }}
+            </div>
+
+            <div class="form-group">
+                <input type="text" class="form-control item" name="first_name" maxlength="150" autofocus="" required=""
+                       id="id_first_name" placeholder="First Name">
+                {{ form.first_name.errors }}
+            </div>
+
+            <div class="form-group">
+                <input type="text" class="form-control item" name="last_name" maxlength="150" autofocus="" required=""
+                       id="id_last_name" placeholder="Last Name">
+                {{ form.last_name.errors }}
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password1" class="form-control item" id="id_password1"
+                       placeholder="Password"
+                       required="">
+                {{ form.password1.errors }}
+            </div>
+
+            <div class="form-group">
+                <input type="password" name="password2" class="form-control item" id="id_password2"
+                       placeholder="Password Confirmation"
+                       required="">
+                {{ form.password2.errors }}
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-block create-account">Create Account</button>
+            </div>
+            <div class="form-group">
+                <h5 class="text-center">Already have an account? <a href="{% url 'user-login' %}">Sign In</a></h5>
+            </div>
+
+        </form>
+    </div>
+{% endblock %}

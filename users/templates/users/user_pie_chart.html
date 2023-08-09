@@ -1,0 +1,50 @@
+{% extends 'users/base2.html' %}
+{% load static %}
+{% block title %}Pie Chart{% endblock %}
+{% block content %}
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            font-size: 9pt;
+        }
+
+        #chartdiv {
+            width: 100%;
+            height: 400px;
+        }
+    </style>
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/kelly.js"></script>
+    <div id="chartdiv"></div>
+    <script>
+        // Apply chart themes
+        am4core.useTheme(am4themes_animated);
+        am4core.useTheme(am4themes_kelly);
+
+        // Create chart instance
+        var chart = am4core.create("chartdiv", am4charts.PieChart);
+
+        chart.marginRight = 400;
+        const data = '{{ chart_data|safe }}'
+        // Add data
+        chart.data = JSON.parse(data)
+
+        // Create axes
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "expense";
+        pieSeries.dataFields.category = "category";
+        // Let's cut a hole in our Pie chart the size of 40% the radius
+        chart.innerRadius = am4core.percent(40);
+
+        // Put a thick white border around each Slice
+        pieSeries.slices.template.stroke = am4core.color("#4a2abb");
+        pieSeries.slices.template.strokeWidth = 2;
+        pieSeries.slices.template.strokeOpacity = 1;
+
+
+        // Add a legend
+        chart.legend = new am4charts.Legend();
+    </script>
+{% endblock %}

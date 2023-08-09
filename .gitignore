@@ -1,0 +1,16 @@
+# Environments
+.env
+env/
+venv/
+
+# Pycharm
+.idea/
+
+# VS Code
+.vscode/
+
+#static file
+staticfiles/
+
+#media file
+user_documents/

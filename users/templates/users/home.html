@@ -1,0 +1,42 @@
+{% extends 'users/base2.html' %}
+{% load static %}
+{% block title %}Home{% endblock %}
+{% block content %}
+    <div class="d-sm-flex justify-content-between align-items-start">
+        <div>
+            <h4 class="card-title card-title-dash">User Data</h4>
+        </div>
+        <div>
+            <a href="{% url 'upload-data' %}" class="btn btn-primary text-white mb-0 me-0" type="button">Upload
+                New File
+            </a>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            {% if user_uploaded_data %}
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Uploaded Date</th>
+                    <th>Bar Chart</th>
+                    <th>Pie Chart</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for data in user_uploaded_data %}
+                    <tr>
+                        <td>{{ data.name }}</td>
+                        <td>{{ data.uploaded_date }}</td>
+                        <td><a href="{% url 'view-bar-chart' data.id %}">View</a></td>
+                        <td><a href="{% url 'view-pie-chart' data.id %}">View</a></td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+            {% else %}
+                <h6>No Data Available.</h6>
+            {% endif %}
+    </div>
+{% endblock %}
