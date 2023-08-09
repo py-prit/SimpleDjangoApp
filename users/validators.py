@@ -6,13 +6,13 @@ from django.core.exceptions import ValidationError
 
 def validate_file_extension(value):
     ext = os.path.splitext(value.name)[1]
-    valid_extensions = ['.csv']
+    valid_extensions = ['.xlsx']
     if not ext.lower() in valid_extensions:
         raise ValidationError('Unsupported file extension.')
 
 
 def validate_file_data(file):
-    user_data = pd.read_csv(file['file'])
+    user_data = pd.read_excel(file['file'], engine='openpyxl')
     csv_columns = list(user_data.columns)
     error_list = []
     if 'expense' in csv_columns:

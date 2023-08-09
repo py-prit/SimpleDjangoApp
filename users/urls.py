@@ -7,7 +7,7 @@ from django.contrib.auth.views import (
 from django.urls import path
 
 from users.views import (HomeView, UserRegisterView, UploadUserDataView, UserUploadedBarChartView,
-                         UserUploadedPieChartView, UserUpdateView)
+                         UserUploadedPieChartView, UserUpdateView, DownloadCSVTemplateFile)
 
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='users/login.html'), name="user-login"),
@@ -32,4 +32,6 @@ urlpatterns = [
     path('password_reset_complete/',
          PasswordResetCompleteView.as_view(template_name='users/password_reset_complete.html'),
          name='password_reset_complete'),
+    path('download_template/', DownloadCSVTemplateFile.as_view(), name="download-template-file"),
+
 ]

@@ -30897,7 +30897,7 @@ div.tagsinput span.tag a {
     height: 34px;
     border-color: transparent;
     border-radius: 6px 0 0 6px;
-    background: r = transparent;
+    /*background: r = transparent;*/
     border-right: 1px solid #dee2e6;
 }
 

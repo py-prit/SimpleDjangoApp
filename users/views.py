@@ -1,6 +1,12 @@
+import mimetypes
+import os
+
 import pandas as pd
+from django.conf import settings
 from django.contrib import messages
+from django.http import HttpResponse, Http404
 from django.shortcuts import render, redirect
+from django.views import View
 from django.views.generic import TemplateView, CreateView, DetailView, UpdateView
 
 from users.forms import UserRegisterForm, FileUploadForm, UserUpdateForm
@@ -89,7 +95,7 @@ class UserUploadedBarChartView(DetailView):
     def get(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             data = UserUploadedData.objects.get(id=kwargs["pk"])
-            df = pd.read_csv(data.file).head()
+            df = pd.read_excel(data.file, engine='openpyxl').head()
             result = df.to_json(orient='records')
             return render(request, self.template_name, context={'chart_data': str(result)})
         return redirect('user-login')
@@ -102,7 +108,25 @@ class UserUploadedPieChartView(DetailView):
     def get(self, request, *args, **kwargs):
         if self.request.user.is_authenticated:
             data = UserUploadedData.objects.get(id=kwargs["pk"])
-            df = pd.read_csv(data.file).head()
+            df = pd.read_excel(data.file, engine='openpyxl').head()
             result = df.to_json(orient='records')
             return render(request, self.template_name, context={'chart_data': str(result)})
         return redirect('user-login')
+
+
+class DownloadCSVTemplateFile(View):
+    template_file_path = "/static/users/expense_manager_template.xlsx"
+    template_filename = "expense_manager_template.xlsx"
+
+    def get(self, request, *args, **kwargs):
+        """
+        Base class for downloading a template file
+        """
+        filepath = str(settings.BASE_DIR) + self.template_file_path
+        if os.path.exists(filepath):
+            path = open(filepath, "rb")
+            mime_type, _ = mimetypes.guess_type(filepath)
+            response = HttpResponse(path, content_type=mime_type)
+            response["Content-Disposition"] = "attachment; filename=%s" % self.template_filename
+            return response
+        raise Http404
